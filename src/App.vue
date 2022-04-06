@@ -51,6 +51,10 @@ export default {
       const params = new URLSearchParams(window.location.search);
       this.videos[0].v = params.get("v1");
       this.videos[1].v = params.get("v2");
+
+      if (params.get("d")) {
+        this.d = parseFloat(params.get("d"));
+      }
     }
   },
   mounted() {
