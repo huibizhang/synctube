@@ -43,6 +43,7 @@ export default {
       prev: {},
       aligned: false,
       timer: null,
+      d: 0.07,
     };
   },
   beforeMount() {
@@ -100,19 +101,23 @@ export default {
       }
     },
     timerStart() {
-      if (
-        this.videos[1].player.getCurrentTime() -
-          this.videos[0].player.getCurrentTime() >
-        0.09
-      )
-        this.videos[1].player.seekTo(this.videos[0].player.getCurrentTime());
+      const v0t = this.videos[0].player.getCurrentTime();
+      const v1t = this.videos[1].player.getCurrentTime();
 
-      if (
-        this.videos[0].player.getCurrentTime() -
-          this.videos[1].player.getCurrentTime() >
-        0.09
-      )
-        this.videos[0].player.seekTo(this.videos[1].player.getCurrentTime());
+      let a, b;
+
+      if (Math.abs(v0t - v1t) > 0) {
+        if (v0t > v1t) {
+          a = this.videos[0].player;
+          b = this.videos[1].player;
+        } else {
+          a = this.videos[1].player;
+          b = this.videos[0].player;
+        }
+
+        if (a.getCurrentTime() - b.getCurrentTime() > this.d)
+          a.seekTo(b.getCurrentTime());
+      }
 
       // console.log(
       //   Math.abs(
